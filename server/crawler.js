@@ -5,6 +5,7 @@ const chalk = require("chalk");
 
 module.exports = async function scrapData(name, site, query) {
   let priceQuery = await priceScraper(site, query);
+  console.log(chalk.green("price scrapped from " + name));
   let price = priceParser(priceQuery);
   const currentTime = JSON.stringify(new Date());
 
@@ -30,7 +31,9 @@ async function priceScraper(site, query) {
 }
 
 function priceParser(price) {
-  //   const priceNumber = (price.match(/\d+/g).map(Number));
-  const priceNumber = price;
-  return priceNumber;
+  let priceNumber = price.match(/\d+/g).map(Number);
+  let realPrice;
+  if (priceNumber.length > 1) realPrice = priceNumber[0] + priceNumber[1] / 100;
+  else realPrice = priceNumber;
+  return realPrice;
 }
